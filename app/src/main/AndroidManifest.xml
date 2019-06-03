@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TimerActivity"></activity>
+        <provider
+            android:name=".TimerProvider"
+            android:authorities="com.alice.alicetimer.provider"
+            android:enabled="true"
+            android:exported="true"></provider>
+
+        <activity android:name=".TimerActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

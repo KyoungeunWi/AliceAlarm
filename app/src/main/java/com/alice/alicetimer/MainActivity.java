@@ -68,9 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener( ) {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SQLiteDatabase db = TimerDbHelper.getsInstance(MainActivity.this).getWritableDatabase();
+                        /*SQLiteDatabase db = TimerDbHelper.getsInstance(MainActivity.this).getWritableDatabase();
                         int deletedCount = db.delete(TimerContract.TimerEntry.TABLE_NAME,
                                 TimerContract.TimerEntry._ID + "=" + deletedId, null);
+                        */
+                        int deletedCount = getContentResolver().delete(TimerProvider.CONTENT_URI,
+                                TimerContract.TimerEntry._ID + " = " + deletedId, null);
                         if(deletedCount == 0){
                             Toast.makeText(MainActivity.this ,"Deleting fail" , Toast.LENGTH_LONG).show();
                         }else{
@@ -89,10 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Cursor getCursor(){
-        TimerDbHelper dbHelper = TimerDbHelper.getsInstance(this);
+        /*TimerDbHelper dbHelper = TimerDbHelper.getsInstance(this);
         Cursor cursor = dbHelper.getReadableDatabase().query(TimerContract.TimerEntry.TABLE_NAME,
                 null,null,null,null,null , null);
-        return cursor;
+        return cursor;*/
+        return getContentResolver().query(TimerProvider.CONTENT_URI ,
+                null ,null,null,
+                 TimerContract.TimerEntry._ID + " DESC");
     }
 
     @Override

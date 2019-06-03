@@ -92,12 +92,17 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI, String.valueOf(mRingToneUri) );
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_TIME , mTime);
 
-        SQLiteDatabase db = TimerDbHelper.getsInstance(this).getWritableDatabase();
-        /* if this is for inserting timer in the list , mTimerId == -1 */
+        //SQLiteDatabase db = TimerDbHelper.getsInstance(this).getWritableDatabase();
+
+        /*  mTimerId == -1 , this is for inserting timer in the list , */
         if(mTimerId == -1) {
-            long newRowId = db.insert(TimerContract.TimerEntry.TABLE_NAME, null, contentValues);
-            if (newRowId == -1) {
-                Log.d(TAG, Long.toString(newRowId));
+            /* Save data to DB */
+            /*long newRowId = db.insert(TimerContract.TimerEntry.TABLE_NAME, null, contentValues);
+            *  if (newRowId == -1) {
+                Toast.makeText(this, "Timer setting fail", Toast.LENGTH_LONG).show( );
+            } */
+            Uri uri = getContentResolver().insert(TimerProvider.CONTENT_URI , contentValues);
+            if (uri == null) {
                 Toast.makeText(this, "Timer setting fail", Toast.LENGTH_LONG).show( );
             } else {
                 Toast.makeText(this, "Timer setting saved", Toast.LENGTH_LONG).show( );
@@ -106,8 +111,12 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
             }
         }else {
             /* if this is for Editing a timer of the list  */
-            int count = db.update(TimerContract.TimerEntry.TABLE_NAME,contentValues,
-                    TimerContract.TimerEntry._ID + " = " + mTimerId , null);
+            /*int count = db.update(TimerContract.TimerEntry.TABLE_NAME,contentValues,
+                    TimerContract.TimerEntry._ID + " = " + mTimerId , null);*/
+            int count = getContentResolver().update(TimerProvider.CONTENT_URI ,
+                    contentValues ,
+                    TimerContract.TimerEntry._ID + " = " + mTimerId ,
+                    null);
             if(count == 0){
                 Toast.makeText(this , "Timer editing fail" , Toast.LENGTH_LONG).show();
             }
