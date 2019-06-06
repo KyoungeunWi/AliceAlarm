@@ -2,6 +2,7 @@ package com.alice.alicetimer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
@@ -24,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TimerBroadcastReceiver myReceiver = new TimerBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(TimerBroadcastReceiver.ACTION_PLAY_SOUND);
+        registerReceiver(myReceiver,intentFilter);
 
         FloatingActionButton fab  = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener( ) {

@@ -9,11 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".AliceService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".CountdownTimer" />
+
         <provider
             android:name=".TimerProvider"
             android:authorities="com.alice.alicetimer.provider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true" />
 
         <activity android:name=".TimerActivity" />
         <activity android:name=".MainActivity">

@@ -3,10 +3,8 @@ package com.alice.alicetimer;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.media.TimedText;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -14,19 +12,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.NumberPicker;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class TimerActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     public  String TAG = "TimerActivity : " ;
-    public final static int REQEST_CODE_RINGTONE =  1000 ;
+    public final static int REQEST_CODE_RINGTONE =  2000 ;
+    public final static int REQEST_CODE_TIMER =  2100 ;
 
     private TextView mTimeSetTextView ;
     private TextView mRingtoneTextView ;
-    private int mTime;
+    private Switch mSwitchButton ;
+
+    private int mTime_seconds;
     private Uri mRingToneUri;
     private String mRingToneTitle ;
+
     private long mTimerId = -1;
 
 
@@ -37,19 +41,36 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
 
         mTimeSetTextView = findViewById(R.id.time_setting_text);
         mRingtoneTextView = findViewById(R.id.sound_setting_text);
+        mSwitchButton = findViewById(R.id.start_switch);
 
         /* If the intent has no Extra data , it is for inserting timer
         *  Or it is for Editing exist timer */
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if(intent.getExtras() != null){
             mTimerId = intent.getLongExtra("ID",-1);
             mRingToneTitle = intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE);
-            mTime = Integer.parseInt(String.valueOf(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_TIME)));
+            mTime_seconds = Integer.parseInt(String.valueOf(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_TIME)));
             mRingToneUri = Uri.parse(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI));
 
             mRingtoneTextView.setText(mRingToneTitle);
-            mTimeSetTextView.setText(mTime + " seconds");
+            mTimeSetTextView.setText(mTime_seconds + " seconds");
         }
+
+        mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener( ) {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                Intent countdownIntent = new Intent(TimerActivity.this , CountdownTimer.class);
+                countdownIntent.putExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE , mRingToneTitle);
+                countdownIntent.putExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI , mRingToneUri.toString());
+                countdownIntent.putExtra(TimerContract.TimerEntry.COULUM_NAME_TIME , mTime_seconds);
+
+                Toast.makeText(getApplicationContext() , "Timer switch is on , Timer stars !!" , Toast.LENGTH_LONG).show();
+
+                startActivityForResult(countdownIntent ,REQEST_CODE_TIMER );
+                mSwitchButton.setChecked(false);
+            }
+        });
     }
 
     public void timeSetButtonClicked(View view) {
@@ -90,7 +111,7 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         ContentValues contentValues = new ContentValues();
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE, mRingToneTitle);
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI, String.valueOf(mRingToneUri) );
-        contentValues.put(TimerContract.TimerEntry.COULUM_NAME_TIME , mTime);
+        contentValues.put(TimerContract.TimerEntry.COULUM_NAME_TIME , mTime_seconds);
 
         //SQLiteDatabase db = TimerDbHelper.getsInstance(this).getWritableDatabase();
 
@@ -125,7 +146,6 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
                 setResult(RESULT_OK);
                 finish();
             }
-
         }
     }
 
@@ -133,6 +153,6 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         mTimeSetTextView.setText(newVal + " seconds");
 
-        mTime = newVal ;
+        mTime_seconds = newVal ;
     }
 }
