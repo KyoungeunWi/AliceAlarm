@@ -9,6 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.widget.NumberPicker;
 
+
+/* This class is for showing dialog activity
+that allow user pick time they want to set */
+
 public class TimeSettingDialog extends DialogFragment {
     private  NumberPicker.OnValueChangeListener mValueChangeListener;
 

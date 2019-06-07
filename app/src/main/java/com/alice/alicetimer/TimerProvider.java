@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.widget.Switch;
 
+/* This class is to handle DB with Content provider .
+*  It is capsulize the accessing the DB from the activities */
+
 public class TimerProvider extends ContentProvider {
     /* provider name */
     private static final String AUTHORITY = "com.alice.alicetimer.provider";
@@ -72,7 +75,6 @@ public class TimerProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
     }
-
 
     // requests to insert a new row.
     @Override

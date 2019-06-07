@@ -2,6 +2,9 @@ package com.alice.alicetimer;
 
 import android.provider.BaseColumns;
 
+
+/* This class defines the colum name to make handling DB  easy */
+
 public final class TimerContract {
     /* This is to prevent making this class instance */
     private TimerContract(){}

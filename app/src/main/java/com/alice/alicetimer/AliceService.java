@@ -12,10 +12,14 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+/* This class is Sevice class that runs in background
+   and plays ringtone user set until user click 'cancel' button */
+
 public class AliceService extends Service {
     public static final String TAG = "AliceService :" ;
 
     MediaPlayer mMediaPlayer ;
+    private boolean mMusicPlaying ;
 
     public AliceService() {
 
@@ -39,6 +43,7 @@ public class AliceService extends Service {
                 e.printStackTrace( );
             }
             mMediaPlayer.start( );
+            mMusicPlaying = true ;
         }
         else {
             Log.d(TAG, "onStartCommand ringToneUri == null :");
@@ -61,5 +66,11 @@ public class AliceService extends Service {
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+        mMusicPlaying = false ;
     }
+
+    public boolean ismMusicPlaying() {
+        return mMusicPlaying;
+    }
+
 }

@@ -56,10 +56,10 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
             mTimeSetTextView.setText(mTime_seconds + " seconds");
         }
 
+        /* When Switch is on , the countdown timer will start */
         mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener( ) {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 Intent countdownIntent = new Intent(TimerActivity.this , CountdownTimer.class);
                 countdownIntent.putExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE , mRingToneTitle);
                 countdownIntent.putExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI , mRingToneUri.toString());
@@ -73,19 +73,26 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         });
     }
 
+    /* This part is to show dialog for time picking  */
     public void timeSetButtonClicked(View view) {
         TimeSettingDialog timeSettingDialog = new TimeSettingDialog();
         timeSettingDialog.setValueChangeListener(this);
         timeSettingDialog.show(getSupportFragmentManager() , "NumberPicker");
     }
 
+    /* This part is for when time picking end from the number picking dialog */
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        mTimeSetTextView.setText(newVal + " seconds");
+        mTime_seconds = newVal ;
+    }
 
+    /*  This part is to show dialog for Ringtone picking and calling   */
     public void soundSetButtonClicked(View view) {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE,"Select Ringtone");
         Uri uri = ContentUris.withAppendedId(
                 MediaStore.Audio.Media.INTERNAL_CONTENT_URI, 1l);
-        // Don't show 'Silent'
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, uri);
         startActivityForResult(intent, REQEST_CODE_RINGTONE);
@@ -101,27 +108,19 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
                 Log.d(TAG, mRingToneUri.toString( ));
                 Ringtone ringtone = RingtoneManager.getRingtone(this, mRingToneUri);
                 mRingToneTitle = ringtone.getTitle(this);
-
                 mRingtoneTextView.setText(mRingToneTitle);
             }
         }
     }
 
+    /* This method is saving a timer data (ringtone ,time) user set on storage  */
     public void saveButtonClicked(View view) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE, mRingToneTitle);
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI, String.valueOf(mRingToneUri) );
         contentValues.put(TimerContract.TimerEntry.COULUM_NAME_TIME , mTime_seconds);
 
-        //SQLiteDatabase db = TimerDbHelper.getsInstance(this).getWritableDatabase();
-
-        /*  mTimerId == -1 , this is for inserting timer in the list , */
         if(mTimerId == -1) {
-            /* Save data to DB */
-            /*long newRowId = db.insert(TimerContract.TimerEntry.TABLE_NAME, null, contentValues);
-            *  if (newRowId == -1) {
-                Toast.makeText(this, "Timer setting fail", Toast.LENGTH_LONG).show( );
-            } */
             Uri uri = getContentResolver().insert(TimerProvider.CONTENT_URI , contentValues);
             if (uri == null) {
                 Toast.makeText(this, "Timer setting fail", Toast.LENGTH_LONG).show( );
@@ -130,10 +129,9 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
                 setResult(RESULT_OK);
                 finish( );
             }
-        }else {
-            /* if this is for Editing a timer of the list  */
-            /*int count = db.update(TimerContract.TimerEntry.TABLE_NAME,contentValues,
-                    TimerContract.TimerEntry._ID + " = " + mTimerId , null);*/
+        }
+        else
+        {
             int count = getContentResolver().update(TimerProvider.CONTENT_URI ,
                     contentValues ,
                     TimerContract.TimerEntry._ID + " = " + mTimerId ,
@@ -149,10 +147,4 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         }
     }
 
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        mTimeSetTextView.setText(newVal + " seconds");
-
-        mTime_seconds = newVal ;
-    }
 }

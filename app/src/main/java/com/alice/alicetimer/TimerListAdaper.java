@@ -9,6 +9,10 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
+/* This class is to bind each data to the each list items
+*  it helps showing the timer data on the list*/
+
 public class TimerListAdaper extends CursorAdapter {
     public TimerListAdaper(Context context ,Cursor c){
         super(context, c ,false);

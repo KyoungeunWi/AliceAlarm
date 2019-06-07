@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/* This class is to handle DB */
+
 public class TimerDbHelper extends SQLiteOpenHelper {
 
     private static TimerDbHelper sInstance ;

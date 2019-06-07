@@ -15,6 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/* This class is First activity that user interact with app
+*  It shows list of timers user saved and let them add timer with pink button.
+*  Users also remove a timer items they don't use with long click */
+
 public class MainActivity extends AppCompatActivity {
     public final int REQ_CODE_INSERT_TIMER = 1011 ;
     public final int REQ_CODE_EDIT_TIMER = 1012 ;
@@ -26,11 +30,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* registration of Broadcast Receiver action */
         TimerBroadcastReceiver myReceiver = new TimerBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(TimerBroadcastReceiver.ACTION_PLAY_SOUND);
+        intentFilter.addAction(Intent.ACTION_CALL);
         registerReceiver(myReceiver,intentFilter);
 
+        /* When Flotion action button's clicked , it will move to timer registration activity  */
         FloatingActionButton fab  = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener( ) {
             @Override
@@ -44,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mTimerListAdaper = new TimerListAdaper(this , getCursor());
         listView.setAdapter(mTimerListAdaper);
 
-
+        /* if the one item of list is clicked , It will move to editing activity */
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener( ) {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /* if the one item of list is clicked for long time ,
+         * It will show the dialog to delete timer item */
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener( ) {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,10 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener( ) {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        /*SQLiteDatabase db = TimerDbHelper.getsInstance(MainActivity.this).getWritableDatabase();
-                        int deletedCount = db.delete(TimerContract.TimerEntry.TABLE_NAME,
-                                TimerContract.TimerEntry._ID + "=" + deletedId, null);
-                        */
+
                         int deletedCount = getContentResolver().delete(TimerProvider.CONTENT_URI,
                                 TimerContract.TimerEntry._ID + " = " + deletedId, null);
                         if(deletedCount == 0){
@@ -97,15 +102,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /* This method is for getting timer items from DB */
     private Cursor getCursor(){
-        /*TimerDbHelper dbHelper = TimerDbHelper.getsInstance(this);
-        Cursor cursor = dbHelper.getReadableDatabase().query(TimerContract.TimerEntry.TABLE_NAME,
-                null,null,null,null,null , null);
-        return cursor;*/
         return getContentResolver().query(TimerProvider.CONTENT_URI ,
                 null ,null,null,
                  TimerContract.TimerEntry._ID + " DESC");
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
