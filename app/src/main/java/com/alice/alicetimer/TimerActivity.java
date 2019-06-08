@@ -147,4 +147,7 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         }
     }
 
+    public void cancelButtonClicked(View view) {
+        onBackPressed();
+    }
 }
