@@ -14,7 +14,8 @@
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".CountdownTimer" />
+        <activity android:name=".CountdownTimer"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".TimerProvider"
@@ -22,8 +23,10 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TimerActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".TimerActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
