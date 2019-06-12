@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +13,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.alice.alicetimer.broadcastReceiver.TimerBroadcastReceiver;
+import com.alice.alicetimer.contentProvider.TimerContract;
+import com.alice.alicetimer.contentProvider.TimerProvider;
+import com.alice.alicetimer.countdowmTimer.TimerActivity;
 
 /* This class is First activity that user interact with app
 *  It shows list of timers user saved and let them add timer with pink button.
@@ -100,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     /* This method is for getting timer items from DB */
     private Cursor getCursor(){

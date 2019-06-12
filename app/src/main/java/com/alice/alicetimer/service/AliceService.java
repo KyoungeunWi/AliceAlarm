@@ -1,14 +1,14 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.service;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.alice.alicetimer.contentProvider.TimerContract;
 
 import java.io.IOException;
 

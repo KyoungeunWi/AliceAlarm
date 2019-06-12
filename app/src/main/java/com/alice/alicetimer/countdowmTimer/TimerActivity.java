@@ -1,4 +1,4 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.countdowmTimer;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -17,6 +17,10 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alice.alicetimer.R;
+import com.alice.alicetimer.contentProvider.TimerContract;
+import com.alice.alicetimer.contentProvider.TimerProvider;
 
 public class TimerActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     public  String TAG = "TimerActivity : " ;

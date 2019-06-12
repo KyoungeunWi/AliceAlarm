@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.alice.alicetimer.contentProvider.TimerContract;
 
 
 /* This class is to bind each data to the each list items

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alice.alicetimer">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,24 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".AliceService"
-            android:enabled="true"
-            android:exported="true"></service>
+        <activity android:name=".weather.WeatherActivity"></activity>
 
-        <activity android:name=".CountdownTimer"
+        <service
+            android:name=".service.AliceService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".countdowmTimer.CountdownTimer"
             android:screenOrientation="portrait" />
 
         <provider
-            android:name=".TimerProvider"
+            android:name=".contentProvider.TimerProvider"
             android:authorities="com.alice.alicetimer.provider"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TimerActivity"
+        <activity
+            android:name=".countdowmTimer.TimerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait" >
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

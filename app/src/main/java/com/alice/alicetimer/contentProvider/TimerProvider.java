@@ -1,4 +1,4 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.contentProvider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.widget.Switch;
 
 /* This class is to handle DB with Content provider .
 *  It is capsulize the accessing the DB from the activities */

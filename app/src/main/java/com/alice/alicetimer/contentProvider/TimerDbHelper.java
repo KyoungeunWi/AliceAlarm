@@ -1,4 +1,4 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.contentProvider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

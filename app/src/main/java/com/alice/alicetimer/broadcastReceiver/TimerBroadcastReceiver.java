@@ -1,4 +1,4 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.broadcastReceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.alice.alicetimer.service.AliceService;
+import com.alice.alicetimer.weather.WeatherActivity;
+import com.alice.alicetimer.contentProvider.TimerContract;
 
 
 /* This class is a Broadcast receiver class that handles actions
@@ -31,6 +35,9 @@ public class TimerBroadcastReceiver extends BroadcastReceiver {
             else {
                 Log.d(TAG, " onReceive: ringToneUri == null :" + ringToneUri.toString( ));
             }
+
+            Intent intentToOkhttp = new Intent(context , WeatherActivity.class);
+            context.startActivity(intentToOkhttp);
         }
         else if(action.equals(Intent.ACTION_CALL))
         {

@@ -1,4 +1,4 @@
-package com.alice.alicetimer;
+package com.alice.alicetimer.countdowmTimer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
