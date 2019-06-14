@@ -18,11 +18,14 @@ public class TimerListAdaper extends CursorAdapter {
     public TimerListAdaper(Context context ,Cursor c){
         super(context, c ,false);
     }
+
+    /* This method is calling the layout of each item of the list */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.timer_list_item,parent,false);
     }
 
+    /* This method puts the data to view  */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView ringtoneTitle = view.findViewById(R.id.list_item_ringtone_title);

@@ -19,9 +19,9 @@ import com.alice.alicetimer.contentProvider.TimerContract;
 import com.alice.alicetimer.contentProvider.TimerProvider;
 import com.alice.alicetimer.countdowmTimer.TimerActivity;
 
-/* This class is First activity that user interact with app
+/* This class is a activity that is shown to user .
 *  It shows list of timers user saved and let them add timer with pink button.
-*  Users also remove a timer items they don't use with long click */
+*  Users also remove a timer items they don't use with clicking item for long time*/
 
 public class MainActivity extends AppCompatActivity {
     public final int REQ_CODE_INSERT_TIMER = 1011 ;
@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
                  TimerContract.TimerEntry._ID + " DESC");
     }
 
-
+    /* This method is called when this activity gets a result from another activity.
+     * this activity update the list that is changed by editing and inserting timer item */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == RESULT_OK && requestCode == REQ_CODE_INSERT_TIMER) {

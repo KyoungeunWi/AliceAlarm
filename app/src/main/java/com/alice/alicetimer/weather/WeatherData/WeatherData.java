@@ -2,6 +2,14 @@ package com.alice.alicetimer.weather.WeatherData;
 
 import java.util.List;
 
+/* This class is a model class to contain the information of weather
+
+    cityName : name of city
+    weatherDesciption : general description of weather like sunny, cloudy, rain etc
+    maxTemprature : maxium temprature of the day in the city
+    minTemprature : minium temprature of the day in the city
+*/
+
 public class WeatherData {
 
     private String cityName ;

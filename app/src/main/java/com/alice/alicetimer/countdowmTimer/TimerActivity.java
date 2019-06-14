@@ -47,18 +47,11 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         mRingtoneTextView = findViewById(R.id.sound_setting_text);
         mSwitchButton = findViewById(R.id.start_switch);
 
-        /* If the intent has no Extra data , it is for inserting timer
-        *  Or it is for Editing exist timer */
-        final Intent intent = getIntent();
-        if(intent.getExtras() != null){
-            mTimerId = intent.getLongExtra("ID",-1);
-            mRingToneTitle = intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE);
-            mTime_seconds = Integer.parseInt(String.valueOf(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_TIME)));
-            mRingToneUri = Uri.parse(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI));
 
-            mRingtoneTextView.setText(mRingToneTitle);
-            mTimeSetTextView.setText(mTime_seconds + " seconds");
-        }
+       /* Initializing */
+        final Intent intent = getIntent();
+        initializeSetting(intent);
+
 
         /* When Switch is on , the countdown timer will start */
         mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener( ) {
@@ -151,7 +144,29 @@ public class TimerActivity extends AppCompatActivity implements NumberPicker.OnV
         }
     }
 
+    /* When cancel button's clicked appplication shows mainActivity (list of timer items) */
     public void cancelButtonClicked(View view) {
         onBackPressed();
+    }
+
+
+    /*If the intent has no Extra data , it means inserting timer
+    Or if the intent has Extra data it is for Editing exist timer */
+    private void initializeSetting(Intent intent){
+        if(intent.getExtras() != null){
+            mTimerId = intent.getLongExtra("ID",-1);
+            mRingToneTitle = intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_TITLE);
+            mTime_seconds = Integer.parseInt(String.valueOf(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_TIME)));
+            mRingToneUri = Uri.parse(intent.getStringExtra(TimerContract.TimerEntry.COULUM_NAME_RINGTONE_URI));
+        }
+        else {
+            mRingToneUri = RingtoneManager.getActualDefaultRingtoneUri(this,RingtoneManager.TYPE_RINGTONE);
+            Ringtone ringtone = RingtoneManager.getRingtone(this, mRingToneUri);
+            mRingToneTitle = ringtone.getTitle(getApplicationContext());
+            mTime_seconds = 1 ;
+        }
+
+        mRingtoneTextView.setText(mRingToneTitle);
+        mTimeSetTextView.setText(mTime_seconds + " seconds");
     }
 }

@@ -33,6 +33,9 @@ public class WeatherAdapter extends BaseAdapter {
         return position;
     }
 
+
+    /* This method is calling the layout of each item of the list
+    *  and put data from DB to View*/
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
