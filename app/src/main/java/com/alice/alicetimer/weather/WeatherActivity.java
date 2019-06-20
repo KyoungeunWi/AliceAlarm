@@ -58,11 +58,13 @@ public class WeatherActivity extends AppCompatActivity {
     */
     private class WeatherHttpAsyncTask extends AsyncTask<String, Void , List<WeatherData>> {
         public static final String TAG = "WeatherHttpAsyncTask ";
+        private WeatherUtils weatherUtils = new WeatherUtils();
+        private List<WeatherData> weatherDataList = null ;
 
         @Override
         protected List<WeatherData> doInBackground(String... strings) {
-
-            return getWeatherDataList(strings[0]);
+            weatherDataList = weatherUtils.getWeatherDataList(strings[0]);
+            return weatherDataList ;
         }
 
         @Override
@@ -77,90 +79,5 @@ public class WeatherActivity extends AppCompatActivity {
 
     }
 
-    /* This method request the weather data with website URL.
-    *  It will get the json data and change it to String
-    *  it just pick the city name, weather description, maxium temprature, minium temprature among the datas.
-    *  With the picked data this method makes list of weather
-    *
-    *  parameter : String url (weather data URL)
-    *  return : String weather data ,List type*/
-
-    public List<WeatherData> getWeatherDataList(String url){
-        String jsonData = null;
-        JSONArray jsonArrayList = null;
-        JSONObject weatherObject = null ;
-
-        String cityName = null;
-        String weatherDescription = null;
-        String temp_min = null;
-        String temp_max = null;
-        WeatherData weatherData = null ;
-        List<WeatherData> weatherDataList = new ArrayList<>();
-
-        Response response = null ;
-
-        Log.d(TAG , "url = " + url);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        try {
-            OkHttpClient client = new OkHttpClient();
-            response = client.newCall(request).execute();
-        } catch (IOException e) {
-            e.printStackTrace( );
-        }
-
-        try {
-            jsonData = response.body().string();
-
-        } catch (IOException e) {
-            e.printStackTrace( );
-        }
-        Log.d(TAG , "response: " + jsonData );
-
-        try {
-            weatherObject = new JSONObject(jsonData);
-        } catch (JSONException e) {
-            e.printStackTrace( );
-        }
-
-        try {
-            jsonArrayList = weatherObject.getJSONArray("list");
-        } catch (JSONException e) {
-            e.printStackTrace( );
-        }
-
-        if (jsonArrayList != null) {
-            for (int index = 0; index < jsonArrayList.length( ); index++) {
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = jsonArrayList.getJSONObject(index);
-                    Log.d("getWeatherdata:", jsonObject.toString( ));
-
-                    /* getting City name of Weather data */
-                    cityName = jsonObject.getString("name");
-
-                    /* getting maxium & minium temperature of the  city */
-                    JSONObject jsonObjTemprature = jsonObject.getJSONObject("main");
-                    temp_max = jsonObjTemprature.getString("temp_max");
-                    temp_min = jsonObjTemprature.getString("temp_min");
-
-                    /* getting gereral weather  discription from weather data */
-                    JSONArray jsonArrayWeather = jsonObject.getJSONArray("weather");
-                    JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject(0);
-                    weatherDescription = jsonObjectWeather.getString("description");
-
-                    Log.d("getWeatherdata:", cityName + ", " + weatherDescription + ", " + temp_max + ", " + temp_min);
-
-                } catch (JSONException e) {
-                    e.printStackTrace( );
-                }
-                weatherData = new WeatherData(cityName,weatherDescription,temp_max,temp_min);
-                weatherDataList.add(weatherData);
-            }
-        }
-        return weatherDataList;
-    }
 
 }
